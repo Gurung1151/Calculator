@@ -114,6 +114,14 @@ function evaluate({ currentOperand,previousOperand, operation}){
   return computation.toString()
 }
 
+const Integer_formatter = new Intl.NumberFormat("en-us",{maximumFractionDigits: 0})
+
+function formatOperand(operand) {
+  if(operand == null) return
+  const [integer, decimal] = operand.split('.')
+  if(decimal == null) return Integer_formatter.format(integer)
+}
+
 function App() {
   const[{ currentOperand, previousOperand, operation}, dispatch] = useReducer(reducer,{})
   
@@ -121,9 +129,9 @@ function App() {
     <div className='calculator-grid'>
       <div className="output">
         <div className="previous-operand">
-          {previousOperand}{operation}
+          {formatOperand(previousOperand)}{operation}
         </div>
-        <div className="current-operand"> {currentOperand} </div>
+        <div className="current-operand"> {formatOperand(currentOperand)} </div>
       </div>
       <button className="span-two" onClick={() => dispatch({type: ACTIONS.CLEAR})}>AC</button>
       <button onClick={() => dispatch({ type: ACTIONS.DELETE_DIGIT})}>DEl</button>
